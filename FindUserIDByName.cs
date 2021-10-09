@@ -15,18 +15,24 @@ namespace FunctionApp33
     {
         [FunctionName("FindUserIDByName")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "{Name}")] HttpRequest req,string Name)
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "{Name}")] HttpRequest req, string Name)
         {
             string responseMessage = "";
+            if (Name is null)
+            {
+
+                return new OkObjectResult("please add the name of the user you would like to find");
+            }
 
             User user = new User();
-            user.UserName = data.UserName;
             UserContext userContext = new UserContext();
-            var username = userContext.Users.Where(a => a.UserName == Name);
-            userContext.Users.Add(user);
-            userContext.SaveChanges();
-            responseMessage = "";
-            return new OkObjectResult(responseMessage);
+            var User = userContext.Users.Where(a => a.UserName == Name)?.FirstOrDefault();
+            if (User is null)
+            {
+
+                return new OkObjectResult("Could not find a user with that name");
+            }
+            return new OkObjectResult($"the is for {Name} is {User.UserID}");
         }
     }
 }
