@@ -24,8 +24,12 @@ namespace FunctionApp33
 
             return new OkObjectResult("Please enter a user to be added");  
             }
+            User user = new User();
+            user.UserName = data.UserName;
+            UserContext userContext = new UserContext();
+            userContext.Users.Add(user);
+            userContext.SaveChanges();
             responseMessage = "";
-
             return new OkObjectResult(responseMessage);
          
 
